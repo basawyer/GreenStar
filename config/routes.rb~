@@ -2,6 +2,8 @@ TmStartupmad::Application.routes.draw do
   match '/contact', :to => 'pages#contact'
   match '/about',   :to => 'pages#about'
   match '/help',    :to => 'pages#help'
+  match '/faq',     :to => 'pages#faq'
+  match '/signin',  :to => 'pages#signin'
   
   root :to => 'pages#home'
 

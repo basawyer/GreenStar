@@ -12,13 +12,16 @@
 
 <%= render 'layouts/header' %>
 
- <div class="container">
- 
-<%= yield %>
+<div class="container">
+   
+  <%= yield %>
 
-<%= render 'layouts/footer' %>
+  <%= render 'layouts/footer' %>
 
 </div> <!-- /container -->
+
+<script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/bootstrap-tab.js"></script>
 
 </body>
 </html>

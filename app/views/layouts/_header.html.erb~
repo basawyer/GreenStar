@@ -1,0 +1,23 @@
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        
+      </a>
+      
+      <div class="nav-collapse">
+        <ul class="nav">
+         <li class="">
+            <a href="./index.html"> <img src="images/icon.jpg" height="35" width="35"> </a>
+          </li>
+          
+         
+          <li class="offset9">
+            <%= link_to "Sign In", signin_path %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
