@@ -1,0 +1,43 @@
+<div class="hero-unit">
+    
+  <div class="row">
+    
+    <form class="form-horizontal span6">
+    <fieldset>
+      <legend>Create an account</legend>
+      
+        <div class="control-group">
+          <label class="control-label" for="focusedInput">Your email address</label>
+          <div class="controls">
+            <input class="input focused" id="focusedInput" type="text">
+          </div>
+        </div>
+          
+        <div class="control-group">
+          <label class="control-label" for="focusedInput">Password</label>
+          <div class="controls">
+            <input class="input focused" id="focusedInput" type="text">
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label" for="focusedInput">Confirm Password</label>
+          <div class="controls">
+            <input class="input focused" id="focusedInput" type="text">
+          </div>
+        </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary span2">Create</button>
+      </div>
+    </fieldset>
+    </form>
+          
+    <div class="span4">  
+      <p>Here's some info about creating your account. Blah blah blah.</p>
+    </div>
+    
+  </div>
+  
+</div> <!-- /hero-unit -->
+    
