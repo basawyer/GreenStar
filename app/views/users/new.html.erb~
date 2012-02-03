@@ -1,0 +1,53 @@
+<div class="hero-unit">
+    
+  <div class="row">
+    
+    <form class="form-horizontal span6">
+    <fieldset>
+      <legend>Create an account</legend>
+      <%= form_for(@user) do |f| %>
+        <%= render 'shared/error_messages' %>
+        <div class="control-group">
+          <%= f.label :name %>
+          <div class="controls">
+            <%= f.text_field :name %>
+          </div>
+        </div>
+      
+        <div class="control-group">
+          <%= f.label :email %>
+          <div class="controls">
+            <%= f.text_field :email %>
+          </div>
+        </div>
+          
+        <div class="control-group">
+          <%= f.label :password %>
+          <div class="controls">
+            <%= f.password_field :password %>
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <%= f.label :password_confirmation, "Confirmation" %>
+          <div class="controls">
+            <%= f.password_field :password_confirmation %>
+          </div>
+        </div>
+      
+      <div class="form-actions">
+        <!--<button type="submit" class="btn btn-primary span2">Create</button>-->
+        <%= f.submit "Sign up" %>
+      </div>
+      <% end %>
+    </fieldset>
+    </form>
+          
+    <div class="span4">  
+      <p>Here's some info about creating your account. Blah blah blah.</p>
+    </div>
+    
+  </div>
+  
+</div> <!-- /hero-unit -->
+    
