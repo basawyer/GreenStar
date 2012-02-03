@@ -1,5 +1,6 @@
 <div class="hero-unit">
 
+<!--
   <div class="row">
   
     <div class="span6">
@@ -14,5 +15,52 @@
     </div>
     
   </div>
+-->
 
+<div class="row">
+    <div class="tabbable span6" style="margin-bottom: 9px;">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#1" data-toggle="tab">My Devices</a></li>
+        <li><a href="#2" data-toggle="tab">My Rooms</a></li>
+        <li><a href="#3" data-toggle="tab">Achievements and Quests</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="1">
+          <p>You dont have any devices.</p>
+          <form class="form-horizontal">
+          <fieldset>
+            <legend>Add a device:</legend>
+            <div class="control-group">
+              <label class="control-label" for="focusedInput">Enter a device ID</label>
+              <div class="controls">
+                <input class="input focused" id="focusedInput" type="text">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+              <!--<button type="reset" class="btn">Cancel</button>-->
+            </div>
+          </fieldset>
+        </div>
+        <div class="tab-pane" id="2">
+          <p>These be your rooms!</p>
+        </div>
+        <div class="tab-pane" id="3">
+          <p>These be your achievements and quests!</p>
+        </div>
+      </div>
+    </div> <!-- /tabbable -->
+    
+    <div class="row">
+      <div class="span2">
+        <img src="http://placehold.it/160x120" alt="Profie Picture">
+      </div>
+      <div class="span1">
+        <p><%= @user.name %></p>
+        <p><%= link_to user_path(@user), @user %></p>
+      </div>  
+    </div>
+  </div><!-- /row -->
+  
+  
 </div>
