@@ -13,9 +13,13 @@
           </li>
           
          
-          <li class="offset9">
-            <%= link_to "Sign In", signup_path %>
-          </li>
+          <% if signed_in? %>
+            <li><%= link_to "Profile", current_user %></li>
+            <li class="offset9"><%= link_to "Sign out", signout_path, :method => :delete %></li>
+          <% else %>
+            <li class="offset9"><%= link_to "Sign in", signin_path %></li>
+          <% end %>
+            
         </ul>
       </div>
     </div>
