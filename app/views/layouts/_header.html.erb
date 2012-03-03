@@ -1,5 +1,5 @@
 
-<div class="navbar navbar-fixed-top">
+<!-- <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -24,4 +24,80 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+
+		
+
+		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		</a>
+		<div class="nav-collapse">
+			<ul class="nav nav-pills">
+				
+				<% if signed_in? %>
+					
+					<li class="">
+						<a href="/"> <img src="../images/logo2.png" width="75"> </a>
+					</li>
+					<!-- <li class="active span2">
+						<%= link_to "Profile", current_user %>
+					</li>
+					<li class="span2">
+						<% link_to "Outlets", users_path, :method => :profile %>
+					</li>
+					<li class="span2">
+						<% link_to "Automation", users_path, :method => :automation %>
+					</li>
+					<li class="span2">
+						<% link_to "Help", root_path, :method => :home %>
+					</li> -->
+					
+					<li class="active span2">
+						<a href="/profile"> Profile </a>
+					</li>
+					<li class="span2">
+						<a href="/outlets"> Outlets </a>
+					</li>
+					<li class="span2">
+						<a href="/automation"> Automation </a>
+					</li>
+					<li class="span2">
+						<a href="/faq"> Help </a>
+					</li>
+				
+					<li class="">
+						<%= link_to "Sign out", signout_path, :method => :delete %>
+					</li>
+				<% else %>
+				
+					<li class="">
+						<a href="/"> <img src="images/logo2.png" width="75"> </a>
+					</li>
+					
+					<li class="">
+						<a href="/">Home</a>
+					</li>
+					<li class="">
+						<a href="/faq">FAQ</a>
+					</li>
+				
+					<div class="offset4">
+						<%= form_for(:session, :url => sessions_path) do |f| %>
+						<%= f.text_field :email %>
+						<%= f.password_field :password %>
+						<%= f.submit "Sign in" %>
+						<% end %>
+					</div>
+					
+				 <% end %>
+			
+				
+			</ul>
+		</div> <!-- nav-collapse -->
+		
+		
+	
+	<hr>
+

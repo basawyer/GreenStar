@@ -5,10 +5,15 @@ TmStartupmad::Application.routes.draw do
   match '/signup',  :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
   match '/signout', :to => 'sessions#destroy'
+  match '/faq',     :to => 'pages#faq'
+  match '/profile', :to => 'users#profile'
+  match '/outlets',  :to => 'users#outlets'
+  match '/automation', :to => 'users#automation'
+  
 
-  match '/contact', :to => 'pages#contact'
-  match '/about',   :to => 'pages#about'
-  match '/help',    :to => 'pages#help'
+ # match '/contact', :to => 'pages#contact'
+ # match '/about',   :to => 'pages#about'
+ # match '/help',    :to => 'pages#help'
   
   root :to => 'pages#home'
 

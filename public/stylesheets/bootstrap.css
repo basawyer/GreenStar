@@ -2094,7 +2094,7 @@ button.btn.small, input[type="submit"].btn.small {
   padding: 3px 15px;
   margin-left: -15px;
   margin-right: -15px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 0 rgba(77, 222, 0, 0.5);
 }
 .nav-list .nav-header {
   font-size: 11px;
@@ -2109,7 +2109,7 @@ button.btn.small, input[type="submit"].btn.small {
 .nav-list .active > a {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  background-color: #0088cc;
+  background-color: #4dde00;
 }
 .nav-list .icon {
   margin-right: 2px;
