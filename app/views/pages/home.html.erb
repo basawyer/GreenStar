@@ -81,12 +81,13 @@
 	
 		<div class="span4">
 		  <h2>Newsletter Signup!</h2>
-		  <form class="well">
-			<label>Enter your email for the latest news:</label>
-			<input type="text" class="span3" placeholder="Email address" size="40">
-			</label>
-			<button type="submit" class="btn">Submit</button>
-		   </form>
+		  <div class="well">
+		  Enter your email to receive updates:
+		  	<%= form_for(@user) do |f| %>
+			<%= f.text_field :email %>
+			<%= f.submit "Sign Up!" %>
+			<% end %>
+		   </div>
 		</div>
 	
 		<div class="span4 offset4">

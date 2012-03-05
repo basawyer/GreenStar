@@ -20,15 +20,27 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    if @user.password.nil?
+      check = true
+      @user.name = "Newsletter User"
+      @user.password = "password"
+	end
     if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      # for newsletter users
+      if check
+        flash[:success] = "Success joining newsletter!"
+        redirect_to(root_path)
+      else
+        sign_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        redirect_to @user      
+      end
     else
       @title = "Sign up"
       render 'new'
     end
   end
+  
 
   def edit
     @title = "Edit user"

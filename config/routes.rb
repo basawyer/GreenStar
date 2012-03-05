@@ -9,7 +9,9 @@ TmStartupmad::Application.routes.draw do
   match '/profile', :to => 'users#profile'
   match '/outlets',  :to => 'users#outlets'
   match '/automation', :to => 'users#automation'
-  
+  match 'change_power/:id' => "slots#change_power"
+  match 'get_latest_data/:unit/:slot' => "units#get_latest"
+  match 'submit' => 'units#submit'
 
  # match '/contact', :to => 'pages#contact'
  # match '/about',   :to => 'pages#about'
