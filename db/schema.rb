@@ -13,6 +13,36 @@
 
 ActiveRecord::Schema.define(:version => 20120203061056) do
 
+  create_table "data_points", :force => true do |t|
+    t.integer  "val"
+    t.datetime "timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "slot_id"
+  end
+
+  create_table "slots", :force => true do |t|
+    t.string   "position"
+    t.integer  "unit_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "power"
+  end
+
+  create_table "sockets", :force => true do |t|
+    t.integer  "position"
+    t.integer  "unit_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "units", :force => true do |t|
+    t.string   "uid"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"

@@ -12,6 +12,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @title = @user.name
   end
+  
+  def outlets
+  	@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
+  end
 
   def new
     @user = User.new

@@ -1,122 +1,122 @@
 <script>
+
   Highcharts.setOptions({
    global: {
       useUTC: false
    }
 });
+
+<% @units = Unit.where(:user_id => @user.id ) %>
+
+<% @units.each do |u|
+
+	u.slots.each do |s| %>
+
    
-var chart;
-$(document).ready(function() {
-   chart = new Highcharts.Chart({
-      chart: {
-         renderTo: 'hc-container',
-         defaultSeriesType: 'spline',
-         marginRight: 10,
-         events: {
-            load: function() {
-   
-               // set up the updating of the chart each second
-               var series = this.series[0];
-               setInterval(function() {
-                 $.ajax({
-                   url: "/get_latest_data/LAMP/0",
-                  success: function(data){
-                    if(data){
-                    var x = (new Date(data.data_point.updated_at)).getTime();
-                    var y = data.data_point.val;
-                    series.addPoint([x, y], true, true);
-                  }
-                    
-                  }
-                 });
-               }, 1000);
-            }
-         }
-      },
-      title: {
-         text: 'Power Consumption'
-      },
-      xAxis: {
-         type: 'datetime',
-         tickInterval: 1000
-      },
-      yAxis: {
-        max: 99,
-        min: 0,
-         title: {
-            text: 'Watts'
-         },
-         plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-         }]
-      },
-      tooltip: {
-         formatter: function() {
-                   return '<b>'+ this.series.name +'</b><br/>'+
-               Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+ 
-               Highcharts.numberFormat(this.y, 2);
-         }
-      },
-      legend: {
-         enabled: false
-      },
-      exporting: {
-         enabled: false
-      },
-      series: [{
-         name: 'Live Data',
-         data: (function() {
-            // generate an array of random data
-            var data = [];
-            
-            <% @units.last.slots[0].data_points[-10..-1].each do |dp| %>
-               data.push({
-                 x: (new Date('<%= dp.updated_at %>')).getTime(),
-                 y: <%= dp.val %>
-               });
-             <% end %>
-            return data;
-         })()
-      }]
-   });
-   
-   $("#left-button").click(function(){
-     var left =$("#slideshow-container").position().left;
-/*	$("#slideshow-container").css('left', (left-645)+"px");*/
-     $("#slideshow-container").stop(true, true).animate({left: (left-645)});
-   });
-   $("#right-button").click(function(){
-     var left = $("#slideshow-container").position().left;
-/*$("#slideshow-container").css('left', (left+645)+"px");*/
-     $("#slideshow-container").stop(true, true).animate({left: (left+645)});
-   });
-   
-});
-</script>
-<div id="hc-container" class="highcharts-container" style="height:310px;margin: 0 2em; clear:both;min-width:600px;">
-</div>
-<p>
-Power is:<a href="/change_power/<%=@units.last.slots[0].id%>">
-<% if @units.last.slots[0].power %>
-Off
-<% else %>
-  On
+		var chart;
+		$(document).ready(function() {
+		   chart = new Highcharts.Chart({
+			  chart: {
+				 renderTo: 'hc-container<%= u.id %><%= s.position %>',
+				 defaultSeriesType: 'spline',
+				 marginRight: 10,
+				 events: {
+					load: function() {
+		   
+					   // set up the updating of the chart each second
+					   var series = this.series[0];
+					   setInterval(function() {
+						 $.ajax({
+						   url: "/get_latest_data/<%= u.id %>/<%= s.position %>" ,
+						  success: function(data){
+							if(data){
+							var x = (new Date(data.data_point.updated_at)).getTime();
+							var y = data.data_point.val;
+							series.addPoint([x, y], true, true);
+						  }
+							
+						  }
+						 });
+					   }, 1000);
+					}
+				 }
+			  },
+			  title: {
+				 text: 'Power Consumption'
+			  },
+			  xAxis: {
+				 type: 'datetime',
+				 tickInterval: 1000
+			  },
+			  yAxis: {
+				max: 99,
+				min: 0,
+				 title: {
+					text: 'Watts'
+				 },
+				 plotLines: [{
+					value: 0,
+					width: 1,
+					color: '#808080'
+				 }]
+			  },
+			  tooltip: {
+				 formatter: function() {
+						   return '<b>'+ this.series.name +'</b><br/>'+
+					   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+ 
+					   Highcharts.numberFormat(this.y, 2);
+				 }
+			  },
+			  legend: {
+				 enabled: false
+			  },
+			  exporting: {
+				 enabled: false
+			  },
+			  series: [{
+				 name: 'Live Data',
+				 data: (function() {
+					// generate an array of random data
+					var data = [];
+					
+					<% s.data_points.each do |dp| %>
+					   data.push({
+						 x: (new Date('<%= dp.updated_at %>')).getTime(),
+						 y: <%= dp.val %>
+					   });
+					 <% end %>
+					return data;
+				 })()
+			  }]
+		   });
+		   
+		});
+		
+		<% end %>
 <% end %>
-</a>
-</p>
-<div id="slideshow">
-  <div id="slideshow-container">
-    <img src="/images/Slide02.png" />
-    <img src="/images/Slide05.png" />
-    <img src="/images/Slide04.png" />
-    <img src="/images/Slide05.png" />
-  </div>
-  <div id="left-button">
-    &lt;
-  </div>
-  <div id="right-button">
-    &gt;
-  </div>
-</div>
+		
+		</script>
+		
+<% @units.each do |u|
+
+	u.slots.each do |s| %>
+		
+		
+		<div id="hc-container<%= u.id %><%= s.id %>" class="highcharts-container" style="height:310px;margin: 0 2em; clear:both;min-width:600px;">
+		</div>
+
+		<p>
+		Power is:<a href="/change_power/<%=s.id%>">
+		<% if s.power %>
+		Off
+		<% else %>
+		  On
+		<% end %>
+		</a>
+		</p>
+
+
+
+	<% end %>
+<% end %>
+
