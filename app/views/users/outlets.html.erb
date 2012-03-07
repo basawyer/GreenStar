@@ -6,7 +6,9 @@
    }
 });
 
-<% @units = Unit.where(:user_id => @user.id ) %>
+<% 
+@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
+@units = Unit.where(:user_id => @user.id ) %>
 
 	var chart;
 	$(document).ready(function() {
