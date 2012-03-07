@@ -8,96 +8,106 @@
 
 <% @units = Unit.where(:user_id => @user.id ) %>
 
-<% @units.each do |u|
+	var chart;
+	$(document).ready(function() {
+	   chart = new Highcharts.Chart({
+		  chart: {
+			 renderTo: 'hc-container',
+			 defaultSeriesType: 'spline',
+			 marginRight: 10,
+			 events: {
+				load: function() {
+	   
+					<% @units.each do |u|
 
-	u.slots.each do |s| %>
+						u.slots.each do |s| %>
+						
+						   // set up the updating of the chart each second
+						   var series<%=s.id%> = this.series[<%= s.id %>];
+						   setInterval(function() {
+							 $.ajax({
+							   url: "/get_latest_data/<%= u.id %>/<%= s.position %>" ,
+							  success: function(data){
+								if(data){
+									var x = (new Date(data.data_point.updated_at)).getTime();
+									var y = data.data_point.val;
+									series<%=s.id%>.addPoint([x, y], true, true);
+							  	}
+							  }
+							  
+							 });
+							}, 1000);	 
+						<% end %>
+					<% end %>
+						   
+				}
+			 }
+			 
+		  },
+		  title: {
+			 text: 'Real-time Power Consumption'
+		  },
+		  xAxis: {
+			 type: 'datetime',
+			 tickInterval: 1000
+		  },
+		  yAxis: {
+			max: 99,
+			min: 0,
+			 title: {
+				text: 'Watts'
+			 },
+			 plotLines: [{
+				value: 0,
+				width: 1,
+				color: '#808080'
+			 }]
+		  },
+		  tooltip: {
+			 formatter: function() {
+					   return '<b>'+ this.series.name +'</b><br/>'+
+				   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+ 
+				   Highcharts.numberFormat(this.y, 2);
+			 }
+		  },
+		  legend: {
+			 enabled: false
+		  },
+		  exporting: {
+			 enabled: false
+		  },
+		  series: [{
+		  
+		  	<% @units.each do |u|
 
-   
-		var chart;
-		$(document).ready(function() {
-		   chart = new Highcharts.Chart({
-			  chart: {
-				 renderTo: 'hc-container<%= u.id %><%= s.position %>',
-				 defaultSeriesType: 'spline',
-				 marginRight: 10,
-				 events: {
-					load: function() {
-		   
-					   // set up the updating of the chart each second
-					   var series = this.series[0];
-					   setInterval(function() {
-						 $.ajax({
-						   url: "/get_latest_data/<%= u.id %>/<%= s.position %>" ,
-						  success: function(data){
-							if(data){
-							var x = (new Date(data.data_point.updated_at)).getTime();
-							var y = data.data_point.val;
-							series.addPoint([x, y], true, true);
-						  }
-							
-						  }
-						 });
-					   }, 1000);
-					}
-				 }
-			  },
-			  title: {
-				 text: '\'<%=s.label%>\' Power Consumption'
-			  },
-			  xAxis: {
-				 type: 'datetime',
-				 tickInterval: 1000
-			  },
-			  yAxis: {
-				max: 99,
-				min: 0,
-				 title: {
-					text: 'Watts'
-				 },
-				 plotLines: [{
-					value: 0,
-					width: 1,
-					color: '#808080'
-				 }]
-			  },
-			  tooltip: {
-				 formatter: function() {
-						   return '<b>'+ this.series.name +'</b><br/>'+
-					   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+ 
-					   Highcharts.numberFormat(this.y, 2);
-				 }
-			  },
-			  legend: {
-				 enabled: false
-			  },
-			  exporting: {
-				 enabled: false
-			  },
-			  series: [{
-				 name: 'Live Data',
-				 data: (function() {
-					// generate an array of random data
-					var data = [];
-					
-					<% s.data_points.each do |dp| %>
-					   data.push({
-						 x: (new Date('<%= dp.updated_at %>')).getTime(),
-						 y: <%= dp.val %>
-					   });
+				u.slots.each do |s| %>
+		  
+					 name: '<%= s.label %>',
+					 data: (function() {
+						var data = [];
+						
+						<% s.data_points[-10..-1].each do |dp| %>
+						   data.push({
+							 x: (new Date('<%= dp.updated_at %>')).getTime(),
+							 y: <%= dp.val %>
+						   });
+						 <% end %>
+						return data;
+					 })()}
+					 <% if u == @units.last && s == u.slots.last %>
+					 	]
+					 <% else %>
+					 	,{
 					 <% end %>
-					return data;
-				 })()
-			  }]
-		   });
-		   
-		});
+					 
+				<% end %>
+			<% end %>
+		  
+	   });
+	   
+	});
 		
-		<% end %>
-<% end %>
-		
-		</script>
-		
-<%  %>
+</script>
 
 <div class="row">
 		
@@ -115,12 +125,15 @@
 <div class="row-fluid">
 		
 <div class="well">
+
+	<div id="hc-container" class="highcharts-container" style="height:400px;margin: 0 2em; clear:both;width:600px;">
+	</div>
+	
+	<div class="row">
 	
 <% @units.each do |u|
 
 	u.slots.each do |s| %>
-		
-		<div class="row">
 		
 			<div class="span3">
 			
@@ -142,20 +155,15 @@
 				<% end %>
 				</a>
 				</p>
+				
 			</div>
 			
-			<div class="span5">
-			<div id="hc-container<%= u.id %><%= s.id %>" class="highcharts-container" style="height:200px;margin: 0 2em; clear:both;width:600px;">
-			</div>
-			</div>
-			
-		</div>
-		
-		<hr>
-
-
 	<% end %>
 <% end %>
+
+</div>
+
+
 
 </div>
 </div>
