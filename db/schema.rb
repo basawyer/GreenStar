@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120203061056) do
+ActiveRecord::Schema.define(:version => 20120307014728) do
 
   create_table "data_points", :force => true do |t|
     t.integer  "val"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20120203061056) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "power"
+    t.string   "label"
   end
 
   create_table "sockets", :force => true do |t|

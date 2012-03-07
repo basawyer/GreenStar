@@ -32,11 +32,20 @@ class UnitsController < ApplicationController
   end
 
   def get_latest
-    u = Unit.find_by_uid(params[:unit])
+    u = Unit.find(params[:unit])
     s = u.get_slot(params[:slot])
-
-
-    render :json => s.data_points.last
+    
+    if s.id == 0 || s.id == 1 || s.id == 2 || s.id == 3
+    	@dp = DataPoint.new
+    	@dp.val = 30+rand(30)
+    	@dp.timestamp = Time.now
+    	@dp.slot_id = s.id
+    	@dp.save
+    	render :json => @dp
+    else   
+    	render :json => s.data_points.last
+    end
   end
+  
 end
   

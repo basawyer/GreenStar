@@ -8,10 +8,16 @@ TmStartupmad::Application.routes.draw do
   match '/faq',     :to => 'pages#faq'
   match '/profile', :to => 'users#profile'
   match '/outlets',  :to => 'users#outlets'
+  match '/users/register_unit', :to => 'users#register_unit'
+  match '/users/update_label', :to => 'users#update_label'
   match '/automation', :to => 'users#automation'
   match 'change_power/:id' => "slots#change_power"
   match 'get_latest_data/:unit/:slot' => "units#get_latest"
   match 'submit' => 'units#submit'
+
+resources :users do
+  post :register_unit
+end
 
  # match '/contact', :to => 'pages#contact'
  # match '/about',   :to => 'pages#about'

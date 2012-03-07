@@ -21,28 +21,57 @@ class UsersController < ApplicationController
     @user = User.new
     @title = "Sign up"
   end
+  
+  def register_unit
+#  	flash[:success] = params[:uid]
+ # 	redirect_to("/outlets")
+  	@unit_w = Unit.where("uid = ?", params[:uid])
+  		if !@unit_w.empty?
+  			@u = @unit_w.first
+  			if @u.user_id.nil?
+  				@u.user_id = params[:user_id]
+  				if @u.save
+  					flash[:success] = "Product added to your profile."
+  					redirect_to("/outlets");
+  				end
+  			else
+  				flash[:fail] = "Product already registered to user."
+  				redirect_to("/outlets")
+  			end
+  		else
+  			flash[:fail] = "Product does not exist."
+  			redirect_to("/outlets")
+  		end  		
+  end
+  
+  def update_label
+  	@slot = Slot.find(params[:slot_id])
+  	@slot.label = params[:label]
+  	@slot.save
+  	redirect_to("/outlets")
+  end
 
   def create
-    @user = User.new(params[:user])
-    if @user.password.nil?
-      check = true
-      @user.name = "Newsletter User"
-      @user.password = "password"
+	@user = User.new(params[:user])
+	if @user.password.nil?
+	  check = true
+	  @user.name = "Newsletter User"
+	  @user.password = "password"
 	end
-    if @user.save
-      # for newsletter users
-      if check
-        flash[:success] = "Success joining newsletter!"
-        redirect_to(root_path)
-      else
-        sign_in @user
-        flash[:success] = "Welcome to the Sample App!"
-        redirect_to @user      
-      end
-    else
-      @title = "Sign up"
-      render 'new'
-    end
+	if @user.save
+	  # for newsletter users
+	  if check
+		flash[:success] = "Success joining newsletter!"
+		redirect_to(root_path)
+	  else
+		sign_in @user
+		flash[:success] = "Welcome to the Sample App!"
+		redirect_to @user      
+	  end
+	else
+	  @title = "Sign up"
+	  render 'new'
+	end
   end
   
 
