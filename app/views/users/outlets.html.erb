@@ -16,15 +16,15 @@ $(function() {
 
 setInterval(
 function(){
-	console.log("success");
+
 	$.ajax({
 		url: "/get_latest_slot_readings/" ,
 		success: function(data){
 		
-		console.log("after");
+		
 		
 		if(data){
-			console.log("inside");
+			
 			var total = 0;
 			var readings = new Array();
 			for(i=0;i<<%=@slots.size%>;i++){
@@ -34,7 +34,7 @@ function(){
 			}
 			
 			$('div.totalWatts').html("<h2> Real-time Total Power Usage: " + total.toString() + " watts </h2>");
-			console.log(total.toString());
+			
 			
 			<% count = 0%>
 			<% @slots.each do |s| %>
@@ -48,7 +48,7 @@ function(){
 });
 }
 
-, 1000 );  ///////// 10 seconds
+, 2000 );  ///////// 10 seconds
 
 });
  
@@ -103,6 +103,7 @@ function(){
 				</a>
 				</p>
 				
+				<h2> <a href="/outlets/<%= s.id %>">Oulet Details </a> </h2>				
 			</div>
 			
 		</div>

@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     @title = @user.name
   end
   
+  def outlet_detail
+  	@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
+  end
+  
   def outlets
   	@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
   end

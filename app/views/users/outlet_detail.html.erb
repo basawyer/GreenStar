@@ -6,9 +6,7 @@
    }
 });
 
-<% 
-@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
-@slot = Slot.find(params[:slot]) %>
+<% @slot = Slot.find(params[:slot]) %>
 
 	var chart;
 	$(document).ready(function() {
@@ -20,27 +18,31 @@
 			 events: {
 				load: function() {
 	   
-					<% @units.each do |u|
-
-						u.slots.each do |s| %>
-						
-						   // set up the updating of the chart each second
-						   var series<%=s.id%> = this.series[<%= s.id %>];
-						   setInterval(function() {
-							 $.ajax({
-							   url: "/get_latest_data/<%= u.id %>/<%= s.position %>" ,
-							  success: function(data){
+					var series = this.series[0];
+					setInterval(function() {
+							
+						$.ajax({
+							url: "/get_latest_data/<%= @slot.id %>",
+							success: function(data){
+								
 								if(data){
-									var x = (new Date(data.data_point.updated_at)).getTime();
+									
+									var x = new Date().getTime();
 									var y = data.data_point.val;
-									series<%=s.id%>.addPoint([x, y], true, true);
-							  	}
-							  }
-							  
-							 });
-							}, 1000);	 
-						<% end %>
-					<% end %>
+									
+										series.addPoint([x,y], true, true);
+										$('div.outletWatts').html("<h2><%= @slot.label %> Real-time Power Usage: " + y.toString() + " watts </h2>");
+									
+								}
+							
+						
+							
+							
+						}
+						});
+							
+						
+					}, 2000 );
 						   
 				}
 			 }
@@ -51,7 +53,7 @@
 		  },
 		  xAxis: {
 			 type: 'datetime',
-			 tickInterval: 1000
+			 tickInterval: 2000
 		  },
 		  yAxis: {
 			max: 99,
@@ -79,93 +81,69 @@
 			 enabled: false
 		  },
 		  series: [{
+		  	name: '<%= @slot.label %> Live Data',
+         	data: (function() {
+				// generate an array of random data
+				var data = [];
+				
+				<% @slot.data_points[-20..-1].each do |dp| %>
+				   data.push({
+					 x: (new Date('<%= dp.updated_at %>')).getTime(),
+					 y: <%= dp.val %>
+				   });
+				 <% end %>
+				return data;
+         })()
 		  
-		  	<% @units.each do |u|
-
-				u.slots.each do |s| %>
-		  
-					 name: '<%= s.label %>',
-					 data: (function() {
-						var data = [];
-						
-						<% s.data_points[-10..-1].each do |dp| %>
-						   data.push({
-							 x: (new Date('<%= dp.updated_at %>')).getTime(),
-							 y: <%= dp.val %>
-						   });
-						 <% end %>
-						return data;
-					 })()}
-					 <% if u == @units.last && s == u.slots.last %>
-					 	]
-					 <% else %>
-					 	,{
-					 <% end %>
-					 
-				<% end %>
-			<% end %>
-		  
-	   });
+	   }]
 	   
 	});
+});
 		
 </script>
 
 <div class="row">
+
+	<div class="well span12">
 		
-<h2>Register New Product:</h2>
-<div class="well span4">
-  Enter product ID:
-	<%= form_tag({ :action => "register_unit", controller => "users", "user_id" => @user.id }) do %>
-	<%= text_field_tag(:uid) %>
-	<%= submit_tag("Register It") %>
-	<% end %>
+	<div class="outletWatts"><h2><%=@slot.label%> Real-time Power Usage: 0 watts</h2></div>
+
+	</div>
+	
 </div>
 
-</div>
-
-<div class="row-fluid">
+<div class="row">
 		
-<div class="well">
+<div class="well offset1 span10">
 
 	<div id="hc-container" class="highcharts-container" style="height:400px;margin: 0 2em; clear:both;width:600px;">
 	</div>
-	
-	<div class="row">
-	
-<% @units.each do |u|
+</div>
 
-	u.slots.each do |s| %>
+</div>
+	
+<div class="row">
+	
+	<div class="well offset3 span6">
+	
+		<h2>
+			<%= form_tag({ :action => "update_label", controller => "users", "user_id" => @user.id, "slot_id" => @slot.id }) do %>
+			<%= text_field_tag(:label, value = @slot.label) %>
+			<%= submit_tag("Update") %>
+			<% end %>
+		</h2>
 		
-			<div class="span3">
-			
-				<h2>
-					<%= form_tag({ :action => "update_label", controller => "users", "user_id" => @user.id, "slot_id" => s.id }) do %>
-					<%= text_field_tag(:label, value = s.label) %>
-					<%= submit_tag("Update") %>
-					<% end %>
-				</h2>
-				
-				<p> Product ID: <%=u.uid%> </p>
-				<p> Slot: <%=s.position%> </p>
-				<p>
-				Power is:<a href="/change_power/<%=s.id%>">
-				<% if s.power %>
-				Off
-				<% else %>
-				  On
-				<% end %>
-				</a>
-				</p>
-				
-			</div>
-			
-	<% end %>
-<% end %>
-
-</div>
-
-
-
-</div>
+		<p> Product ID: <%=Unit.find(@slot.unit_id).uid%> </p>
+		<p> Slot: <%=@slot.position%> </p>
+		<p>
+		Power is:<a href="/change_power/<%=@slot.id%>">
+		<% if @slot.power %>
+		Off
+		<% else %>
+		  On
+		<% end %>
+		</a>
+		</p>
+		
+	</div>
 </div>
