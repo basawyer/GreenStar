@@ -1,143 +1,88 @@
 <script>
 
-  Highcharts.setOptions({
-   global: {
-      useUTC: false
-   }
-});
 
 <% 
+
 @user = User.authenticate_with_salt(*cookies.signed[:remember_token])
-@units = Unit.where(:user_id => @user.id ) %>
+@units = Unit.where(:user_id => @user.id ) 
+@slots = Array.new
+@units.each do |u|
+	@slots += u.slots
+end
 
-	var chart;
-	$(document).ready(function() {
-	   chart = new Highcharts.Chart({
-		  chart: {
-			 renderTo: 'hc-container',
-			 defaultSeriesType: 'spline',
-			 marginRight: 10,
-			 events: {
-				load: function() {
-	   
-					<% @units.each do |u|
+%>
 
-						u.slots.each do |s| %>
-						
-						   // set up the updating of the chart each second
-						   var series<%=s.id%> = this.series[<%= s.id %>];
-						   setInterval(function() {
-							 $.ajax({
-							   url: "/get_latest_data/<%= u.id %>/<%= s.position %>" ,
-							  success: function(data){
-								if(data){
-									var x = (new Date(data.data_point.updated_at)).getTime();
-									var y = data.data_point.val;
-									series<%=s.id%>.addPoint([x, y], true, true);
-							  	}
-							  }
-							  
-							 });
-							}, 1000);	 
-						<% end %>
-					<% end %>
-						   
-				}
-			 }
-			 
-		  },
-		  title: {
-			 text: 'Real-time Power Consumption'
-		  },
-		  xAxis: {
-			 type: 'datetime',
-			 tickInterval: 1000
-		  },
-		  yAxis: {
-			max: 99,
-			min: 0,
-			 title: {
-				text: 'Watts'
-			 },
-			 plotLines: [{
-				value: 0,
-				width: 1,
-				color: '#808080'
-			 }]
-		  },
-		  tooltip: {
-			 formatter: function() {
-					   return '<b>'+ this.series.name +'</b><br/>'+
-				   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+ 
-				   Highcharts.numberFormat(this.y, 2);
-			 }
-		  },
-		  legend: {
-			 enabled: false
-		  },
-		  exporting: {
-			 enabled: false
-		  },
-		  series: [{
-		  
-		  	<% @units.each do |u|
+$(function() {
 
-				u.slots.each do |s| %>
-		  
-					 name: '<%= s.label %>',
-					 data: (function() {
-						var data = [];
-						
-						<% s.data_points[-10..-1].each do |dp| %>
-						   data.push({
-							 x: (new Date('<%= dp.updated_at %>')).getTime(),
-							 y: <%= dp.val %>
-						   });
-						 <% end %>
-						return data;
-					 })()}
-					 <% if u == @units.last && s == u.slots.last %>
-					 	]
-					 <% else %>
-					 	,{
-					 <% end %>
-					 
-				<% end %>
-			<% end %>
-		  
-	   });
-	   
-	});
+setInterval(
+function(){
+	console.log("success");
+	$.ajax({
+		url: "/get_latest_slot_readings/" ,
+		success: function(data){
 		
+		console.log("after");
+		
+		if(data){
+			console.log("inside");
+			var total = 0;
+			var readings = new Array();
+			for(i=0;i<<%=@slots.size%>;i++){
+			
+				total = total + data[i].data_point.val;
+				readings[i] = data[i].data_point.val;
+			}
+			
+			$('div.totalWatts').html("<h2> Real-time Total Power Usage: " + total.toString() + " watts </h2>");
+			console.log(total.toString());
+			
+			<% count = 0%>
+			<% @slots.each do |s| %>
+			
+				$('div.outletWatts<%=s.id%>').html("<h2> Real-time Power Usage: " + readings[<%=count%>].toString() + " watts </h2>");
+				<% count = count + 1 %>
+			<% end %>
+			
+		}
+	}
+});
+}
+
+, 1000 );  ///////// 10 seconds
+
+});
+ 
+ 
 </script>
+
+<div class="well span11">
+<div class="totalWatts"><h2> Real-time Total Power Usage: 0</h2></div>
+</div>
 
 <div class="row">
 		
-<h2>Register New Product:</h2>
-<div class="well span4">
-  Enter product ID:
-	<%= form_tag({ :action => "register_unit", controller => "users", "user_id" => @user.id }) do %>
-	<%= text_field_tag(:uid) %>
-	<%= submit_tag("Register It") %>
-	<% end %>
-</div>
-
-</div>
-
-<div class="row-fluid">
-		
-<div class="well">
-
-	<div id="hc-container" class="highcharts-container" style="height:400px;margin: 0 2em; clear:both;width:600px;">
+	<h2>Register New Product:</h2>
+	<div class="well span4">
+	  Enter product ID:
+		<%= form_tag({ :action => "register_unit", controller => "users", "user_id" => @user.id }) do %>
+		<%= text_field_tag(:uid) %>
+		<%= submit_tag("Register It") %>
+		<% end %>
 	</div>
-	
-	<div class="row">
-	
+
+</div>
+
+		
 <% @units.each do |u|
 
 	u.slots.each do |s| %>
+	
+		<div class="row">
 		
-			<div class="span3">
+			<div class="well span11">
+			
+			<div class="outletWatts<%=s.id%>"><h2>Real-time Power Usage: 0 watts</h2></div>
+				
 			
 				<h2>
 					<%= form_tag({ :action => "update_label", controller => "users", "user_id" => @user.id, "slot_id" => s.id }) do %>
@@ -160,12 +105,7 @@
 				
 			</div>
 			
+		</div>
+			
 	<% end %>
 <% end %>
-
-</div>
-
-
-
-</div>
-</div>

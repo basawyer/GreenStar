@@ -13,6 +13,8 @@ TmStartupmad::Application.routes.draw do
   match '/automation', :to => 'users#automation'
   match 'change_power/:id' => "slots#change_power"
   match 'get_latest_data/:unit/:slot' => "units#get_latest"
+  match '/get_latest_slot_readings' => "users#get_latest_slot_readings"
+  match '/outlets/:slot' => "users#outlet_detail"
   match 'submit' => 'units#submit'
 
 resources :users do

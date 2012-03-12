@@ -16,6 +16,19 @@ class UsersController < ApplicationController
   def outlets
   	@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
   end
+  
+ def get_latest_slot_readings
+ 	readings = Hash.new
+ 	@user = User.authenticate_with_salt(*cookies.signed[:remember_token])
+ 	@user.units.each do |u|
+ 		u.slots.each do |s|
+ 			readings[s.id] = s.data_points.last
+ 			#readings[s.id].val = 30 + rand(30)
+ 		end
+ 	end
+ 	
+ 	render :json => readings
+ end
 
   def new
     @user = User.new

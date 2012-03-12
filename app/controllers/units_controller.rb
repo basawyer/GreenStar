@@ -3,32 +3,35 @@ class UnitsController < ApplicationController
 
   def submit
     u = Unit.find_by_uid(params[:unit])
-
-    if u
-      slot = u.get_slot(params[:socket_num])
-      if slot
-      slot[0].data_points.create(:val => params[:value], :timestamp => params[:timestamp])
-      else
-        unit.slots.create(:position => params[:socket_num])
-        slot = unit.get_slot(params[:socket_num])
-        slot[0].data_points.create(:val => params[:value], :timestamp => params[:timestamp])
-      end
-    else
-      unit = Unit.new
-      unit.uid = params[:unit]
-      unit.save
-      unit.slots.create(:position => params[:socket_num])
-      slot = unit.get_slot(params[:socket_num])
-      slot[0].data_points.create(:val => params[:value], :timestamp => params[:timestamp])
-    end
-
+    reply = String(u.uid) + "="
     
-    @slot = u.get_slot(params[:socket_num])
-    if !@slot[0].power
-    render :inline => "PENII"
-    else
-      render :inline => "BUTTS"
+    if u
+    	s = 0
+    	params.keys.each do |k|
+    		next if k == "unit"    	
+    		@val = params[k]
+    		sl = u.slots[s]
+    		if sl
+    			@dp = DataPoint.new
+				@dp.val = @val
+				@dp.slot_id = sl.id
+				@dp.timestamp = Time.now
+				@dp.save
+				
+				if sl.power
+					reply = reply + "0"
+				else
+					reply = reply + "1"
+				end
+				
+			end
+			s = s + 1
+    	end
     end
+    		
+    render :inline => reply
+    		
+
   end
 
   def get_latest
@@ -46,6 +49,8 @@ class UnitsController < ApplicationController
     	render :json => s.data_points.last
     end
   end
+  
+  
   
 end
   

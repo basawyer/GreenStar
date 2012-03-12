@@ -7,6 +7,6 @@ class SlotsController < ApplicationController
       @slot.power = true
     end
     @slot.save
-    redirect_to "/"
+    redirect_to "/outlets"
   end
 end
