@@ -1,102 +1,111 @@
 <div class="row">
-
-		<div class="span7 offset2">
-			<a href="/"> <img src="images/logo3.png"> </a>
-		</div>
-	
+  <div>
+  <ul class="nav nav-pills">
+  <li class="">
+				<h2 class="span2">
+				  Greenstar
+				</h2>
+			</li>
+			
+			<li class="offset1">
+				<a href="/">Home</a>
+			</li>
+			<li class="">
+				<a href="/">Products</a>
+			</li>
+			<li class="">
+				<a href="/faq">FAQ</a>
+			</li>
+		
+			<div class="offset4">
+				<%= form_for(:session, :url => sessions_path) do |f| %>
+				<%= f.text_field :email %>
+				<%= f.password_field :password %>
+				<%= f.submit "Sign in" %>
+				<% end %>
+			</div>
+			
+		
+	</ul>
+  </div>
 </div>
 
-<div class="row-fluid">
-	
-		<div class="">
-			<h2> Smart-grid technology starts in the home! It starts with <i>you!</i></h2>
-			<div class="well">
-				<b>GreenStar</b> is an inexpensive, modular and fun solution for 
-				<b>energy management and home automation.</b> We provide outlet-covers 
-				and powerstrips that send power usage to the web and can be turned on and off.  
-				The home owner can start with a few and then expand to more. It's easy to keep track of your 
-				trends and begin making changes to help save you money.
-			</div>
-		</div>
-	
+<script type="text/javascript">
+<!-- Begin
+function toggle(obj) {
+// Moz. or IE
+var sibling=(obj.nextSibling.nodeType==3)? obj.nextSibling.nextSibling : obj.nextSibling;
+// hide or show
+if(sibling.style.display=='' || sibling.style.display=='block') {
+	sibling.style.display='none';
+    obj.firstChild.firstChild.data='+';
+    }
+else {
+	sibling.style.display='block';
+    obj.firstChild.firstChild.data='-';
+    }
+}
+//
+function initCollapse() {
+var oDT=document.getElementById('content').getElementsByTagName('dt');
+for (var i=0; i < oDT.length; i++) {
+	oDT[i].onclick=function() {toggle(this)};
+    var oSpan=document.createElement('span');
+    var sign=document.createTextNode('+');
+    oSpan.appendChild(sign);
+    oDT[i].insertBefore(oSpan, oDT[i].firstChild);
+    oSpan.style.fontFamily='monospace';
+    oSpan.style.paddingRight='0.5em';
+    oDT[i].style.cursor='pointer';
+    toggle(oDT[i]);
+	}
+oDT=null;
+}
+window.onload=function() {if(document.getElementById && document.createElement) {initCollapse();}}
+//-->
+
+</script>
+	<!--
+    	This script downloaded from www.JavaScriptBank.com
+    	Come to view and download over 2000+ free javascript at www.JavaScriptBank.com
+	-->
+
+<div class="row well" style="box-shadow: 0 0 10px 1px #888; background: #FFFFFF;">
+
+    <h2>
+    Frequently Asked Questions
+    </h2>
+  
+  <hr>
+  
+  <dl id="content">
+    <dt>How does it work?</dt>
+    <dd>Here's the answer<br><br></dd>
+    <br>
+    
+    <dt>This is Question</dt>
+    <dd>Ma quande lingues coalesce, li grammatica del resultant lingue es plu 
+		simplic e regulari quam ti del coalescent lingues. Li nov lingua franca 
+		va esser plu simplic e regulari quam li existent Europan lingues. It va 
+		esser tam simplic quam Occidental: in fact, it va esser Occidental. A un 
+		Angleso.<br><br></dd>
+		<br>
+		
+    <dt>This is Question</dt>
+    <dd>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam 
+		nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat 
+		volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation 
+		ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
+		Duis autem vel eum iriure dolor in hendrerit in.</dd>
+		
+  </dl>
+</div>
+	<!--
+    	This script downloaded from www.JavaScriptBank.com
+    	Come to view and download over 2000+ free javascript at www.JavaScriptBank.com
+	-->
+
+  
+  
 </div>
 
-<hr>
-
-<div class="row">
-
-	<div class="row">
-	
-		<div class="span4">
-			<h2> Modular Setup </h2>
-			<div class="well">
-				Start monitoring and controlling a few outlets and expand to more using our <b>cheap</b> outlet-covers and powerstrips.
-			</div>
-		</div>
-	
-		<div class="span4">
-			<h2> Build Your Profile </h2>
-			<div class="well">
-				Log the power usage of devices in your home, locate power hogs and make changes to save money.
-			</div>
-		</div>
-	
-		<div class="span4">
-			<h2> Be In Control </h2>
-			<div class="well">
-				Awareness of your energy usage can help reduce it by 20%. Schedules, timers and alerts can reduce this even more.
-			</div>
-		</div>
-		
-	</div>
-	
-	<div class="row">
-		
-		<div class="span4">
-			<h2> Build a community </h2>
-			<div class="well">
-				Create groups with your friends, share your strategies, make goals and learn together.
-			</div>
-		</div>
-		
-		<div class="span4">
-			<h2> Have fun!  </h2>
-			<div class="well">
-				 Gain achievements, earn points; all while saving money on your electric bill.
-			</div>
-		</div>
-	
-		<div class="span4">
-			<h2> Headline  </h2>
-			<div class="well">
-				A bunch of text describing more of the headline...
-			</div>
-		</div>
-	
-	</div>
-	
-	<div class="row">
-	
-		<div class="span4">
-		  <h2>Newsletter Signup!</h2>
-		  <form class="well">
-			<label>Enter your email for the latest news:</label>
-			<input type="text" class="span3" placeholder="Email address" size="40">
-			</label>
-			<button type="submit" class="btn">Submit</button>
-		   </form>
-		</div>
-	
-		<div class="span4 offset4">
-		  <h2>Get Started! </h2>
-		  <form class="well">
-			<label>Enter your product serial # to start:</label>
-			<input type="text" class="span3" placeholder="Serial #">
-			</label>
-			<button type="submit" class="btn">Submit</button>
-		   </form>
-		</div>
-	
-	</div>
-	
-</div>
