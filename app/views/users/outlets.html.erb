@@ -55,14 +55,14 @@ function(){
  
 </script>
 
-<div class="well span11">
-<div class="totalWatts"><h2> Real-time Total Power Usage: 0</h2></div>
+<div class="row well span11" style="box-shadow: 0 0 10px 1px #888; background: #FFFFFF;">
+  <div class="totalWatts"><h2> Real-time Total Power Usage: 0</h2></div>
 </div>
 
 <div class="row">
 		
 	<h2>Register New Product:</h2>
-	<div class="well span4">
+	<div class="row well span4" style="box-shadow: 0 0 10px 1px #888; background: #FFFFFF;">
 	  Enter product ID:
 		<%= form_tag({ :action => "register_unit", controller => "users", "user_id" => @user.id }) do %>
 		<%= text_field_tag(:uid) %>
@@ -79,7 +79,7 @@ function(){
 	
 		<div class="row">
 		
-			<div class="well span11">
+			<div class="row well span11" style="box-shadow: 0 0 10px 1px #888; background: #FFFFFF;">
 			
 			<div class="outletWatts<%=s.id%>"><h2>Real-time Power Usage: 0 watts</h2></div>
 				

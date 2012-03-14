@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ThorMetrics | <%= @title %></title>
+  <title>GreenStar | <%= @title %></title>
   
   <%= render 'layouts/stylesheets' %>
   
   <%= javascript_include_tag :defaults %>
-  <%= javascript_include_tag "jquery" # %>
-  <%= javascript_include_tag "bootstrap-tab" # %>
-  
+  <%= javascript_include_tag "jquery"  %>
+  <%= javascript_include_tag "bootstrap"  %>
+  <%= javascript_include_tag "bootstrap-tab"  %>
+  <%= javascript_include_tag "highcharts" %>
+    
   <%= csrf_meta_tag %>
+  
+  <style type="text/css">
+      body {
+        padding-top: 10px;
+        padding-bottom: 40px;
+        padding-left: 50px;
+        padding-right: 50px;
+      }
+    </style>
+  
 </head>
 <body>
 
